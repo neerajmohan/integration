@@ -1,14 +1,14 @@
 <div class="container">
     <div class="d-flex flex-column">
         <div>
-            <h2>Products Listing</h2>
+            <div class="d-flex justify-content-between"><h2>Products Listing</h2><button (click)=logout() class="btn btn-danger">Logout</button></div>
         </div>
         <div>
             <button [routerLink]="['/add']" class="btn btn-primary">+Add new item</button><br>
             <table class="table table-striped">
                 <thead>
                     <th>Name</th>
-                    <th>Quantity</th>
+                    <th>Category</th>
                     <th>Stock</th>
                     <th>Price</th>
                     <th>Action</th>
@@ -20,8 +20,8 @@
                         <td>{{product.stock}}</td>
                         <td>{{product.price}}</td>
                         <td>
-                            <button type="button" data-toggle="modal" data-target="#editModal" (click)=open(product.id)  class="btn btn-info">Edit</button>
-                            <button type="button" data-toggle="modal" data-target="#deleteModal"  class="btn btn-danger">Delete</button>
+                            <button type="button" data-toggle="modal" data-target="#editModal" (click)=open(product.id,edit)  class="btn btn-info">Edit</button>
+                            <button type="button" data-toggle="modal" data-target="#deleteModal" (click)=open(product.id,delete)  class="btn btn-danger">Delete</button>
                         </td>
                     </tr>
                 </tbody>
@@ -82,7 +82,7 @@
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-danger">Delete</button>
+              <button (click)=delete(id) type="button" class="btn btn-danger">Delete</button>
             </div>
           </div>
         </div>

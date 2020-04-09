@@ -17,8 +17,8 @@ export class ProductsService {
 
   constructor(private http:HttpClient) { }
 
-  getProducts(){
-   return this.http.get(BASE_URL+"/products",httpOptions);
+  getProducts(page){
+   return this.http.get(BASE_URL+"/products?page="+page,httpOptions);
   }
   getProduct(id){
    return this.http.get(BASE_URL+"/products/"+id,httpOptions);

@@ -3,6 +3,7 @@ import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import { FormGroup, FormControl } from '@angular/forms';
 import { ProductsService } from '../products.service';
 import { Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-index',
@@ -14,6 +15,10 @@ export class IndexComponent implements OnInit {
   id:any;
   products:any;
 
+  currPage:any;
+  pages:any;
+  count:any;
+
   editForm = new FormGroup({
     name:new FormControl(""),
     category:new FormControl(""),
@@ -21,11 +26,16 @@ export class IndexComponent implements OnInit {
     stock:new FormControl(0),
   });
   
-  constructor(private modalService: NgbModal,private service:ProductsService, private router:Router) { }
+  constructor(private modalService: NgbModal,private service:ProductsService, private router:Router,private route: ActivatedRoute) { }
 
   ngOnInit(): void {
-    this.service.getProducts().subscribe(data=>{
-      this.products = data;
+    this.route.params.subscribe(params => {
+      this.currPage = +params['page'];
+    });
+    this.service.getProducts(this.currPage).subscribe(data=>{
+      this.products = data['data'];
+      this.count=data['last_page']
+      this.pages=[...Array(this.count).keys()];
     })
   }
   logout(){

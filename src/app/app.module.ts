@@ -13,6 +13,10 @@ import { LoginService } from './login/login.service';
 import { LoginComponent } from './login/login.component';
 import { AuthGuardService } from './login/auth-guard.service';
 import { TokenInterceptor } from './token.interceptor';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ToastrModule } from 'ngx-toastr';
+
+// import Echo from "laravel-echo"
 
 @NgModule({
   declarations: [
@@ -28,6 +32,9 @@ import { TokenInterceptor } from './token.interceptor';
     AppRoutingModule,
     ReactiveFormsModule,
     HttpClientModule,
+    BrowserAnimationsModule, // required animations module
+    ToastrModule.forRoot() // ToastrModule added
+    // Echo
   ],
   providers: [
     ProductsService,LoginService,AuthGuardService,

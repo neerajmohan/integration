@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient} from '@angular/common/http';
 import { HttpHeaders } from '@angular/common/http';
 
-const BASE_URL = "http://127.0.0.1:8000/api";
+const BASE_URL = "http://192.168.225.115:8000/api";
 const httpOptions = {
   headers: new HttpHeaders({
     'Content-Type':  'application/json',
@@ -21,6 +21,7 @@ export class ProductsService {
    return this.http.get(BASE_URL+"/products?page="+page,httpOptions);
   }
   getProduct(id){
+    console.log('hello');
    return this.http.get(BASE_URL+"/products/"+id,httpOptions);
   }
   addProduct(body){

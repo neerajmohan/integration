@@ -4,6 +4,8 @@ import { FormGroup, FormControl } from '@angular/forms';
 import { ProductsService } from '../products.service';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
+import Echo from 'laravel-echo';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-index',
@@ -26,9 +28,22 @@ export class IndexComponent implements OnInit {
     stock:new FormControl(0),
   });
   
-  constructor(private modalService: NgbModal,private service:ProductsService, private router:Router,private route: ActivatedRoute) { }
+  constructor(private modalService: NgbModal,private service:ProductsService, private router:Router,private route: ActivatedRoute,private toastr:ToastrService) { }
 
   ngOnInit(): void {
+    var echo = new Echo({
+      broadcaster: 'pusher',
+      key: '0c542dfcb9f4cf639da6',
+      cluster: 'ap2',
+      forceTLS: true
+    });
+    var channel = echo.channel('products');
+    channel.listen('ProductUpdated', (e) => {
+      console.log('Product updated : '+e.user+' updated '+e.productName);
+      this.toastr.info(e.user+' updated '+e.productName,'Product Updated!',{
+        timeOut: 10000
+      });
+  });
     this.route.params.subscribe(params => {
       this.currPage = +params['page'];
     });
@@ -57,17 +72,14 @@ export class IndexComponent implements OnInit {
   edit(){
     this.editForm.value.id=this.id;
     var body=JSON.stringify(this.editForm.value);
-    console.log(body);
     this.service.updateProduct(body,this.id).subscribe(data=>{
-      console.log(data);
-      location.reload();
+      this.ngOnInit();
     });
   }
 
   delete(id){
     this.service.deleteProduct(id).subscribe(res=>{
-      console.log(res);
-      location.reload();
+      this.ngOnInit();
     })
   }
 }
